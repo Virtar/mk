@@ -1,6 +1,5 @@
 "homepage": "https://Virtar/mortal-kombat-tournament",
 "scripts": {
-  // otros scripts...
   "predeploy": "npm run build",
   "deploy": "gh-pages -d build"
 }
