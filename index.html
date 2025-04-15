@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mortal Kombat Championship Manager</title>
+  <style>
+    /* Estilos generales */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: Arial, sans-serif;
+      background-color: black;
+      color: white;
+      min-height: 100vh;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    /* Header */
+    header {
+      background: linear-gradient(to right, #8B0000, black, #8B0000);
+      padding: 1.5rem 1rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      letter-spacing: 0.05em;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+    
+    .title .red {
+      color: #DC2626;
+    }
+    
+    .title .yellow {
+      color: #FBBF24;
+    }
+    
+    .subtitle {
+      display: block;
+      font-size: 1.25rem;
+      margin-top: 0.25rem;
+    }
+    
+    .tab-buttons {
+      display: flex;
+      gap: 0.5rem;
+    }
+    
+    .tab-button {
+      padding: 0.5rem 1rem;
+      border-radius: 0.375rem;
+      background-color: #1F2937;
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .tab-button:hover {
+      background-color: #374151;
+    }
+    
+    .tab-button.active {
+      background-color: #B91C1C;
+    }
+    
+    /* Banner */
+    .banner {
+      background: linear-gradient(to bottom, black, #111827);
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+    
+    .banner h2 {
+      /* Ajustado el tamaño de fuente como estaba en React */
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 1.5rem;
+    }
+    
+    .banner h2 .highlight {
+      color: #DC2626;
+    }
+    
+    .banner p {
+      font-size: 1.25rem;
+      max-width: 48rem;
+      margin: 0 auto;
+    }
+    
+    /* Main content */
+    main {
+      padding: 2rem 1rem;
+    }
+    
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 2rem;
+      text-align: center;
+    }
+    
+    /* Tournaments grid */
+    .tournaments-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .tournament-card {
+      background-color: #111827;
+      border-radius: 0.5rem;
+      overflow: hidden;
+      border: 2px solid #8B0000;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      transform: scale(1);
+      transition: transform 0.3s;
+    }
+    
+    .tournament-card:hover {
+      transform: scale(1.05);
+    }
+    
+    .tournament-header {
+      background: linear-gradient(to right, #8B0000, black, #8B0000);
+      padding: 0.75rem 1rem;
+    }
+    
+    .tournament-header h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    
+    .tournament-body {
+      padding: 1.5rem;
+    }
+    
+    .tournament-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    
+    .tournament-info .label {
+      font-weight: 600;
+    }
+    
+    .tournament-info .highlight {
+      color: #FBBF24;
+    }
+    
+    .payment-info {
+      margin-top: 1rem;
+      padding: 0.75rem;
+      background-color: #1F2937;
+      border-radius: 0.375rem;
+    }
+    
+    .payment-info h4 {
+      font-weight: 600;
+      color: #FBBF24;
+      margin-bottom: 0.25rem;
+    }
+    
+    .register-button {
+      display: block;
+      width: 100%;
+      margin-top: 1.5rem;
+      background-color: #B91C1C;
+      color: white;
+      font-weight: bold;
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    
+    .register-button:hover {
+      background-color: #DC2626;
+    }
+    
+    /* Registration process */
+    .registration-process {
+      margin-top: 4rem;
+    }
+    
+    .process-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+    
+    .process-step {
+      background-color: #111827;
+      padding: 1.5rem;
+      border-radius: 0.5rem;
+      text-align: center;
+    }
+    
+    .step-number {
+      background-color: #B91C1C;
+      width: 3rem;
+      height: 3rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+    
+    .step-number span {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    
+    .process-step h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    
+    /* Rules section */
+    .rules-container {
+      background-color: #111827;
+      padding: 2rem;
+      border-radius: 0.5rem;
+    }
+    
+    .rules-list {
+      list-style-type: none;
+    }
+    
+    .rule-item {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+    
+    .rule-number {
+      background-color: #B91C1C;
+      color: white;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 0.75rem;
+      flex-shrink: 0;
+    }
+    
+    .rule-text {
+      font-size: 1.125rem;
+    }
+    
+    .important-note {
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #1F2937;
+      border-radius: 0.375rem;
+    }
+    
+    .important-note h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+      color: #FBBF24;
+    }
+    
+    /* Contact section */
+    .contact-container {
+      background-color: #111827;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      max-width: 42rem;
+      margin: 0 auto;
+    }
+    
+    .contact-intro {
+      font-size: 1.125rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+    
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .form-group label {
+      margin-bottom: 0.25rem;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #1F2937;
+      border-radius: 0.375rem;
+      border: 1px solid #374151;
+      color: white;
+    }
+    
+    .form-control:focus {
+      border-color: #DC2626;
+      outline: none;
+    }
+    
+    .contact-info {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid #374151;
+    }
+    
+    .contact-info h3 {
+      font-size: 1.25rem;
+      font-weight: bold;
+      margin-bottom: 0.75rem;
+    }
+    
+    .contact-details {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    
+    .contact-details .label {
+      font-weight: 600;
+    }
+    
+    /* Footer */
+    footer {
+      background-color: #111827;
+      padding: 1.5rem;
+      margin-top: 3rem;
+      text-align: center;
+    }
+    
+    .copyright {
+      margin-bottom: 0.5rem;
+    }
+    
+    .disclaimer {
+      font-size: 0.875rem;
+      color: #9CA3AF;
+    }
+    
+    /* Responsive adjustments */
+    @media (min-width: 768px) {
+      .header-content {
+        flex-direction: row;
+      }
+      
+      .title {
+        text-align: left;
+        margin-bottom: 0;
+      }
+      
+      .tournaments-grid,
+      .process-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .process-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      
+      /* Ajuste responsive del tamaño del banner para pantallas más grandes */
+      .banner h2 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header con el logo y título -->
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <h1 class="title">
+          <span class="red">MORTAL</span> <span class="yellow">KOMBAT</span>
+          <span class="subtitle">CHAMPIONSHIP MANAGER</span>
+        </h1>
+        <div class="tab-buttons">
+          <button class="tab-button active" data-tab="torneos">TORNEOS</button>
+          <button class="tab-button" data-tab="reglas">REGLAS</button>
+          <button class="tab-button" data-tab="contacto">CONTACTO</button>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Banner principal -->
+  <div class="banner">
+    <div class="container">
+      <h2>¡DEMUESTRA TU <span class="highlight">PODER</span> EN LA ARENA!</h2>
+      <p>Participa en nuestros torneos oficiales de Mortal Kombat y conviértete en el campeón supremo. ¡La gloria te espera!</p>
+    </div>
+  </div>
+  
+  <!-- Contenido principal -->
+  <main class="container">
+    <!-- Sección de Torneos -->
+    <div class="tab-content active" id="torneos">
+      <h2 class="section-title">PRÓXIMOS TORNEOS</h2>
+      <div class="tournaments-grid">
+        <div class="tournament-card">
+          <div class="tournament-header">
+            <h3>MORTAL KOMBAT ULTIMATE CHAMPIONSHIP</h3>
+          </div>
+          <div class="tournament-body">
+            <div class="tournament-info">
+              <span class="label">Fecha:</span>
+              <span>30 de Abril, 2025</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Hora:</span>
+              <span>18:00</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Inscripción:</span>
+              <span class="highlight">$15</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Premio:</span>
+              <span class="highlight">$500</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Plazas:</span>
+              <span>12 de 32 disponibles</span>
+            </div>
+            <div class="payment-info">
+              <h4>Información de pago:</h4>
+              <p>Transferencia a cuenta 1234-5678-9012-3456 antes del 29/04</p>
+            </div>
+            <button class="register-button">INSCRÍBETE AHORA</button>
+          </div>
+        </div>
+        
+        <div class="tournament-card">
+          <div class="tournament-header">
+            <h3>KOMBAT LEAGUE SEASON XI</h3>
+          </div>
+          <div class="tournament-body">
+            <div class="tournament-info">
+              <span class="label">Fecha:</span>
+              <span>15 de Mayo, 2025</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Hora:</span>
+              <span>19:00</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Inscripción:</span>
+              <span class="highlight">$20</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Premio:</span>
+              <span class="highlight">$750</span>
+            </div>
+            <div class="tournament-info">
+              <span class="label">Plazas:</span>
+              <span>43 de 64 disponibles</span>
+            </div>
+            <div class="payment-info">
+              <h4>Información de pago:</h4>
+              <p>Transferencia a cuenta 1234-5678-9012-3456 antes del 14/05</p>
+            </div>
+            <button class="register-button">INSCRÍBETE AHORA</button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Proceso de inscripción -->
+      <div class="registration-process">
+        <h2 class="section-title">PROCESO DE INSCRIPCIÓN</h2>
+        <div class="process-grid">
+          <div class="process-step">
+            <div class="step-number">
+              <span>1</span>
+            </div>
+            <h3>Reserva tu lugar</h3>
+            <p>Selecciona el torneo en el que deseas participar y haz clic en "Inscríbete ahora"</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">
+              <span>2</span>
+            </div>
+            <h3>Realiza el pago</h3>
+            <p>Transfiere el monto de la inscripción a la cuenta bancaria proporcionada antes de la fecha límite</p>
+          </div>
+          <div class="process-step">
+            <div class="step-number">
+              <span>3</span>
+            </div>
+            <h3>Confirma tu asistencia</h3>
+            <p>Preséntate en el lugar del torneo 30 minutos antes para confirmar tu asistencia</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección de Reglas -->
+    <div class="tab-content" id="reglas" style="display: none;">
+      <h2 class="section-title">REGLAS DEL TORNEO</h2>
+      <div class="rules-container">
+        <ul class="rules-list">
+          <li class="rule-item">
+            <div class="rule-number">1</div>
+            <span class="rule-text">Formato de eliminación doble</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">2</div>
+            <span class="rule-text">Cada match al mejor de 3 (Bo3)</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">3</div>
+            <span class="rule-text">Finales al mejor de 5 (Bo5)</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">4</div>
+            <span class="rule-text">Se permiten todos los personajes</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">5</div>
+            <span class="rule-text">Prohibido el uso de glitches o bugs</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">6</div>
+            <span class="rule-text">Los jugadores deben estar presentes 15 minutos antes de su match</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">7</div>
+            <span class="rule-text">El uso de controles propios está permitido</span>
+          </li>
+          <li class="rule-item">
+            <div class="rule-number">8</div>
+            <span class="rule-text">En caso de desconexión, el round se repite</span>
+          </li>
+        </ul>
+        <div class="important-note">
+          <h3>Nota importante:</h3>
+          <p>El incumplimiento de cualquiera de estas reglas puede resultar en la descalificación del participante sin derecho a reembolso del monto de inscripción.</p>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Sección de Contacto -->
+    <div class="tab-content" id="contacto" style="display: none;">
+      <h2 class="section-title">CONTACTO</h2>
+      <div class="contact-container">
+        <p class="contact-intro">
+          ¿Tienes alguna pregunta sobre nuestros torneos? ¡No dudes en contactarnos!
+        </p>
+        
+        <form class="contact-form">
+          <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" class="form-control">
+          </div>
+          <div class="form-group">
+            <label for="message">Mensaje</label>
+            <textarea id="message" rows="4" class="form-control"></textarea>
+          </div>
+          <button type="submit" class="register-button">ENVIAR MENSAJE</button>
+        </form>
+        
+        <div class="contact-info">
+          <h3>Información de contacto</h3>
+          <div class="contact-details">
+            <p><span class="label">Email:</span> torneos@mortalkombat-championship.com</p>
+            <p><span class="label">Teléfono:</span> +1 555-123-4567</p>
+            <p><span class="label">Dirección:</span> Arena de Combate, Calle Principal #123, Ciudad</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p class="copyright">© 2025 Mortal Kombat Championship Manager. Todos los derechos reservados.</p>
+      <p class="disclaimer">Mortal Kombat es una marca registrada de Warner Bros. Entertainment Inc.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Funcionalidad para las pestañas
+    document.addEventListener('DOMContentLoaded', function() {
+      const tabButtons = document.querySelectorAll('.tab-button');
+      const tabContents = document.querySelectorAll('.tab-content');
+      
+      tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          // Desactivar todos los botones y ocultar todos los contenidos
+          tabButtons.forEach(btn => btn.classList.remove('active'));
+          tabContents.forEach(content => content.style.display = 'none');
+          
+          // Activar el botón clickeado y mostrar su contenido
+          this.classList.add('active');
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(tabId).style.display = 'block';
+        });
+      });
+    });
+  </script>
+</body>
+</html>
